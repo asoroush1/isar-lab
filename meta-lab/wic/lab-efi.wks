@@ -1,0 +1,12 @@
+# Based on meta-isar/scripts/lib/wic/canned-wks/sdimage-efi.wks (ISAR v1.1).
+# Change: console order. The LAST console= becomes /dev/console, so ttyS0 goes last —
+# systemd status output and console-bound services then appear on the serial port.
+
+part /boot --source bootimg-efi-isar --sourceparams "loader=grub-efi" --ondisk sda --label efi --part-type EF00 --align 1024
+
+part / --source rootfs --ondisk sda --fstype ext4 --mkfs-extraopts "-T default" --label platform --align 1024 --use-uuid --exclude-path boot/
+
+# Spare space after the last partition (inlined from meta-isar's expand-padding.wks.inc)
+part --source empty --no-table --ondisk sda --size 256M
+
+bootloader --ptable gpt --timeout 3 --append "rootwait console=tty0 console=ttyS0,115200"

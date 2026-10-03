@@ -1,0 +1,30 @@
+header:
+  version: 14
+
+build_system: isar
+
+machine: qemuamd64
+distro: debian-bookworm
+target: lab-image
+
+repos:
+  isar:
+    url: https://github.com/ilbers/isar.git
+    commit: cc5a5d98a89ca19049575b94b71a0beeafa61c71   # v1.1
+    layers:
+      meta:
+      meta-isar:
+  lab:
+    layers:
+      meta-lab:
+
+bblayers_conf_header:
+  standard: |
+    BBPATH = "${TOPDIR}"
+    BBFILES ?= ""
+
+local_conf_header:
+  lab-users: |
+    USERS += "root"
+    USER_root[password] = "root"
+    USER_root[flags] += "clear-text-password"

@@ -1,0 +1,11 @@
+[Unit]
+Description=Platform heartbeat boot report
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/platform-heartbeat
+RemainAfterExit=yes
+StandardOutput=journal+console
+
+[Install]
+WantedBy=multi-user.target
